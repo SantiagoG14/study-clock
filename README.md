@@ -1,1 +1,1 @@
-"# study-clock" 
+# study-clock

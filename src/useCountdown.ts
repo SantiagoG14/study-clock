@@ -24,7 +24,6 @@ export const useCountDown = (): [
 
   const startTimer = (e: any) => {
     const { total, hours, minutes, seconds } = getTimeRemaining(e)
-    // console.log(total, hours, minutes, seconds)
     if (total >= 0) {
       setTimer([total, hours, minutes, seconds])
     }
@@ -63,6 +62,7 @@ export const useCountDown = (): [
   }
 
   const pausetimer = () => {
+    if (!Ref.current) return
     clearInterval(Ref.current)
   }
 

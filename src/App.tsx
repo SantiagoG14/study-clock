@@ -24,12 +24,6 @@ function App() {
     }
   }
 
-  // useEffect(() => {
-  //   soundRef.current?.addEventListener("ended", soundEnd)
-
-  //   return () => soundRef.current?.removeEventListener("ended", soundEnd)
-  // })
-
   useEffect(() => {
     if (!timerClearing) {
       return
@@ -47,18 +41,6 @@ function App() {
           clearNewTimer(studyTime * 60)
         }
       }, 1000)
-
-      // if (action === "study") {
-      //   setAction("break")
-      //   setTimeout(() => {
-      //     clearNewTimer(breakTime * 60)
-      //   }, 1000)
-      // } else {
-      //   setAction("study")
-      //   setTimeout(() => {
-      //     clearNewTimer(studyTime * 60)
-      //   }, 1000)
-      // }
     }
   }, [timer])
 
@@ -66,8 +48,6 @@ function App() {
     if (action === "study") {
       setCurrentTime(studyTime * 60)
       newTimer(studyTime * 60)
-
-      // currentTime.curre = studyTime * 60
     }
   }, [studyTime])
 
@@ -75,19 +55,14 @@ function App() {
     if (action === "break") {
       setCurrentTime(breakTime * 60)
       newTimer(breakTime * 60)
-
-      // currentTime.current = breakTime * 60
     }
   }, [breakTime])
 
   function increase(setTime: (value: React.SetStateAction<number>) => void) {
-    // currentTime.current = currentTime.current + 60
     setTime((prev) => (prev + 1 > 60 ? prev : prev + 1))
   }
 
   function decrease(setTime: (value: React.SetStateAction<number>) => void) {
-    // currentTime.current = currentTime.current - 60
-
     setTime((prev) => (prev - 1 <= 0 ? prev : prev - 1))
   }
 
@@ -99,7 +74,6 @@ function App() {
   function pause() {
     if (timer[0] > 0) {
       setCurrentTime(timer[0] * 0.001)
-      // currentTime.current = timer[0] * 0.001
       pauseTimer()
       setTimerClearing(false)
     }
@@ -120,7 +94,7 @@ function App() {
 
   return (
     <div className="App w-screen h-screen flex items-center justify-center font-sans">
-      <div className="w-full max-w-xl flex flex-col">
+      <div className="w-full max-w-xl flex flex-col border p-4 rounded-lg">
         <h1
           id="timer-label"
           className=" text-3xl capitalize text-gray-900 text-center"
@@ -159,10 +133,10 @@ function App() {
           />
         </div>
         <button
-          className={`py-2 px-6 mt-4 rounded-xl hover:-translate-y-1 text-yellow-50 capitalize m-auto transition-all ${
+          className={`py-2 px-6 mt-4 rounded-xl text-yellow-50 capitalize m-auto transition-all ${
             timerClearing
               ? " bg-red-500 hover:bg-red-600"
-              : "bg-green-500 hover:bg-green-600 hover:shadow-lg hover:shadow-green-500/50 "
+              : "bg-green-500 hover:bg-green-600"
           }`}
           onClick={timerClearing ? pause : start}
           id="start_stop"
@@ -176,7 +150,7 @@ function App() {
         ></audio>
 
         <button
-          className="py-2 px-6 mt-16 rounded-xl bg-gray-400 mx-auto text-yellow-50"
+          className="py-2 px-6 mt-16 rounded-xl bg-gray-400 mx-auto text-gray-100 hover:bg-gray-500 transition-colors"
           onClick={restart}
           id="reset"
         >
@@ -209,21 +183,23 @@ function Time({ decrease, increase, time, setTime, timeClearing, type }: time) {
         <button
           onClick={() => decrease(setTime)}
           disabled={timeClearing}
-          className="btn-change-time "
+          className="btn-change-time disabled:pointer-events-none"
           id={type === "Break Time" ? "break-decrement" : "session-decrement"}
         >
           -
         </button>
-        <div
-          className=" font-mono text-lg"
+        <input
+          className="font-mono text-lg max-w-[32px] border rounded-lg text-center"
           id={type === "Break Time" ? "break-length" : "session-length"}
-        >
-          {time}
-        </div>
+          type="text"
+          value={time}
+          disabled={timeClearing}
+          onChange={(e) => setTime(Number(e.target.value))}
+        />
         <button
           onClick={() => increase(setTime)}
           disabled={timeClearing}
-          className="btn-change-time "
+          className="btn-change-time disabled:pointer-events-none"
           id={type === "Break Time" ? "break-increment" : "session-increment"}
         >
           +
